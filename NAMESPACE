@@ -1,0 +1,4 @@
+useDynLib(MLEP, .registration = TRUE)
+
+export(fr,grr,mlep,persp_penetrance)
+
