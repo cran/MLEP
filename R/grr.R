@@ -1,5 +1,5 @@
 grr <-
-function(para, poly, minimize=F){
+function(para, poly){
 
 	Val = apply(sapply(poly, function(x){
 		.C("eval_grr",            
@@ -11,10 +11,6 @@ function(para, poly, minimize=F){
 			result=as.double(rep(0,3)) 
 			)$result
 		}), 1, sum)
-	if(minimize){
-		-Val
-	}else{
-		Val
-	}
+	Val
 }
 

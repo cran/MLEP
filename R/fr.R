@@ -1,5 +1,5 @@
 fr <-
-function (para, poly, minimize=F) 
+function (para, poly) 
 {
 	Val = sum(sapply(poly, function(x) {
 		.C("eval_fr", 
@@ -10,12 +10,7 @@ function (para, poly, minimize=F)
 		length = as.integer(length(x)), 
 		result = as.double(0))$result
 	}))
-	if(minimize){
-		-Val
-	}
-	else{
-		Val
-	}
+	Val
 }
 
 

@@ -1,0 +1,8 @@
+MLEP-package            Evaluate maximum likelihood estimate of
+                        penetrance parameters
+fr                      Evaluate log likelihood value
+grr                     Evaluate gradient of log likelihood
+mlep                    Evaluate likelihood as polynomial
+pedigree                Example pedigree data
+PerspPenetrance         Draw perspective plot of log likelihood surface
+polynomial              Likelihood polynomial of example pedigree data

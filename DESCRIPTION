@@ -1,13 +1,14 @@
 Package: MLEP
 Type: Package
 Title: Maximum likelihood estimate of penetrance parameters
-Version: 0.0-1
-Date: 2011-12-24
+Version: 0.0-3
+Date: 2012-06-15
 Author: Yuki Sugaya
 Maintainer: Yuki Sugaya <sugaya@stat.math.keio.ac.jp>
-Description: Programs for exploring the maximum likelihood estimates of penetrance parameters for linkage analysis
+Description: Programs for exploring the maximum likelihood estimates of
+        penetrance parameters for linkage analysis
 License: GPL (>= 2)
 LazyLoad: yes
-Packaged: 2011-12-24 16:17:49 UTC; sugaya
+Packaged: 2012-06-15 04:48:25 UTC; sugaya
 Repository: CRAN
-Date/Publication: 2011-12-25 18:38:56
+Date/Publication: 2012-06-15 05:08:08

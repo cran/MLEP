@@ -19,12 +19,11 @@ data(polynomial)
 data(polynomial)
 
 ## Draw perspective plot of the likelihood polynomial
-persp_penetrance(polynomial, "gamma", 0.279, theta=-60, phi=20)
+PerspPenetrance(polynomial, "gamma", 0.279, theta=-60, phi=20)
 
 ## Evaluate maximum likelihood estimate of penetrance parameters
 constrOptim(c(0.9,0.8,0.1), fr, grr,
 	ui=rbind(c(1,0,0),c(0,1,0),c(0,0,1),c(1,-1,0),c(0,1,-1),c(-1,0,0),c(0,-1,0),c(0,0,-1)),
-	ci=c(rep(0,5),rep(-1,3)),
-	poly=polynomial, minimize=TRUE)
+	ci=c(rep(0,5),rep(-1,3)), poly=polynomial, control=list(fnscale=-1))
 }
 \keyword{datasets}

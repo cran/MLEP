@@ -45,7 +45,7 @@ List of coefficient vector of likelihood polynomail.
 Each of the vector has \code{powers} and \code{max_power} as attribute.
 }
 \references{
-Sugaya Y. MLEP: Programs for exploring the maximum likelihood estimates of penetrance parameters, In preparation. 
+Sugaya Y. MLEP: Programs for exploring the maximum likelihood estimates of penetrance parameters, Submitted. 
 }
 \author{
 Yuki Sugaya

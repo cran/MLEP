@@ -1,4 +1,4 @@
-persp_penetrance <-
+PerspPenetrance <-
 function(poly, fixed, value, ...){
 
 	if(fixed == "alpha"){

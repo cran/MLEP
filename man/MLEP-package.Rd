@@ -12,8 +12,8 @@ This package provides maximum likelihood estimate of penetrance parameters for l
 \tabular{ll}{
 Package: \tab MLEP\cr
 Type: \tab Package\cr
-Version: \tab 0.0\cr
-Date: \tab 2011-12-24\cr
+Version: \tab 0.0-2\cr
+Date: \tab 2012-6-15\cr
 License: \tab GPL(>=2)\cr
 LazyLoad: \tab yes\cr
 }
@@ -23,7 +23,7 @@ Yuki Sugaya\cr
 Maintainer: Yuki Sugaya <sugaya@stat.math.keio.ac.jp>
 }
 \references{
-Sugaya Y. MLEP: Programs for exploring the maximum likelihood estimates of penetrance parameters, In preparation. 
+Sugaya Y. MLEP: Programs for exploring the maximum likelihood estimates of penetrance parameters, Submitted. 
 }
 \keyword{ package }
 

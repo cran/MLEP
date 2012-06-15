@@ -2228,40 +2228,39 @@ void eval_grr(double *penetrance, double *poly, int *powers, int *max_power, int
 	for(i=0;i<*length;i++){
 		tmp = *(powers+i);
 		for(j=2;j>=1;j--){
-//			matrix[j][i] = tmp / (int)pow(*max_power, j);
 			a = tmp % (int)pow(*max_power, j);
-//			if( a == 0 ){
-//				matrix[j][i] = (int)(tmp / pow(*max_power, j) + 0.1);
-//			}
-//			else{
-				matrix[j][i] = tmp / (int)pow(*max_power, j);
-//			}
+			matrix[j][i] = tmp / (int)pow(*max_power, j);
 			tmp = a;
 		}
 		matrix[0][i] = tmp;
 	}
+
 	double value=0.0;
-	double tmp1,tmp2;
-	int k;
-	int x = 0;
+	double tmp1;
+	int x = 0,y;
 
 	while( x < *length ){
-		k = matrix[2][x];
-		tmp1 = 0.0;
-		while( (x < *length) && k == matrix[2][x] ){
-			j = matrix[1][x];
-			tmp2 = 0.0;
-			while( ((x < *length) && j == matrix[1][x]) && k == matrix[2][x] ){
-				tmp2 += *(poly+x) * pow(*penetrance, matrix[0][x]);
+		y = x+1;
+		if( matrix[2][x] == matrix[2][y] ){
+			if( matrix[1][x] == matrix[1][y] ){
+				tmp1 = *(poly+x) * pow(*penetrance, matrix[0][x]);
+				while( y<*length && matrix[1][x]==matrix[1][y] && matrix[2][x]==matrix[2][y] ){
+					tmp1 += *(poly+y) * pow(*penetrance, matrix[0][y]);
+					y++;
+				}
+				value += tmp1 * pow(*(penetrance+1), matrix[1][x]) * pow(*(penetrance+2), matrix[2][x]);
+				x=y;
+			}
+			else{
+				value += *(poly+x) * pow(*penetrance, matrix[0][x]) * pow(*(penetrance+1), matrix[1][x]) * pow(*(penetrance+2), matrix[2][x]);
 				x++;
 			}
-			tmp1 += tmp2 * pow(*(penetrance+1), j);
 		}
-		value += tmp1 * pow(*(penetrance+2), k);
+		else{
+			value += *(poly+x) * pow(*penetrance, matrix[0][x]) * pow(*(penetrance+1), matrix[1][x]) * pow(*(penetrance+2), matrix[2][x]);
+			x++;
+		}
 	}
-//	*result = log(value);
-
-
 
 /* gradient */
 
@@ -2297,53 +2296,77 @@ void eval_grr(double *penetrance, double *poly, int *powers, int *max_power, int
 	double valuegamma=0.0;
 
 /* gradient(alpha) */
-	x=0;
+	x = 0;
 	while( x < *length ){
-		k = matrix[2][x];
-		tmp1 = 0.0;
-		while( (x < *length) && k == matrix[2][x] ){
-			j = matrix[1][x];
-			tmp2 = 0.0;
-			while( ((x < *length) && j == matrix[1][x]) && k == matrix[2][x] ){
-				tmp2 += *(coef_alpha+x) * pow(*penetrance, *(dalpha+x));
+		y = x+1;
+		if( matrix[2][x] == matrix[2][y] ){
+			if( matrix[1][x] == matrix[1][y] ){
+				tmp1 = *(coef_alpha+x) * pow(*penetrance, matrix[0][x]-1);
+				while( y<*length && matrix[1][x]==matrix[1][y] && matrix[2][x]==matrix[2][y] ){
+					tmp1 += *(coef_alpha+y) * pow(*penetrance, matrix[0][y]-1);
+					y++;
+				}
+				valuealpha += tmp1 * pow(*(penetrance+1), matrix[1][x]) * pow(*(penetrance+2), matrix[2][x]);
+				x=y;
+			}
+			else{
+				valuealpha += *(coef_alpha+x) * pow(*penetrance, matrix[0][x]-1) * pow(*(penetrance+1), matrix[1][x]) * pow(*(penetrance+2), matrix[2][x]);
 				x++;
 			}
-			tmp1 += tmp2 * pow(*(penetrance+1), j);
 		}
-		valuealpha += tmp1 * pow(*(penetrance+2), k);
+		else{
+			valuealpha += *(coef_alpha+x) * pow(*penetrance, matrix[0][x]-1) * pow(*(penetrance+1), matrix[1][x]) * pow(*(penetrance+2), matrix[2][x]);
+			x++;
+		}
 	}
 /* gradient(beta) */
-	x=0;
+	x = 0;
 	while( x < *length ){
-		k = matrix[2][x];
-		tmp1 = 0.0;
-		while( (x < *length) && k == matrix[2][x] ){
-			j = *(dbeta+x);
-			tmp2 = 0.0;
-			while( ((x < *length) && j == *(dbeta+x)) && k == matrix[2][x] ){
-				tmp2 += *(coef_beta+x) * pow(*penetrance, matrix[0][x]);
+		y = x+1;
+		if( matrix[2][x] == matrix[2][y] ){
+			if( matrix[1][x] == matrix[1][y] ){
+				tmp1 = *(coef_beta+x) * pow(*penetrance, matrix[0][x]);
+				while( y<*length && matrix[1][x]==matrix[1][y] && matrix[2][x]==matrix[2][y] ){
+					tmp1 += *(coef_beta+y) * pow(*penetrance, matrix[0][y]);
+					y++;
+				}
+				valuebeta += tmp1 * pow(*(penetrance+1), matrix[1][x]-1) * pow(*(penetrance+2), matrix[2][x]);
+				x=y;
+			}
+			else{
+				valuebeta += *(coef_beta+x) * pow(*penetrance, matrix[0][x]) * pow(*(penetrance+1), matrix[1][x]-1) * pow(*(penetrance+2), matrix[2][x]);
 				x++;
 			}
-			tmp1 += tmp2 * pow(*(penetrance+1), j);
 		}
-		valuebeta += tmp1 * pow(*(penetrance+2), k);
+		else{
+			valuebeta += *(coef_beta+x) * pow(*penetrance, matrix[0][x]) * pow(*(penetrance+1), matrix[1][x]-1) * pow(*(penetrance+2), matrix[2][x]);
+			x++;
+		}
 	}
 
 /* gradient(gamma) */
-	x=0;
+	x = 0;
 	while( x < *length ){
-		k = *(dgamma+x);
-		tmp1 = 0.0;
-		while( (x < *length) && k == *(dgamma+x) ){
-			j = matrix[1][x];
-			tmp2 = 0.0;
-			while( ((x < *length) && j == matrix[1][x]) && k == *(dgamma+x) ){
-				tmp2 += *(coef_gamma+x) * pow(*penetrance, matrix[0][x]);
+		y = x+1;
+		if( matrix[2][x] == matrix[2][y] ){
+			if( matrix[1][x] == matrix[1][y] ){
+				tmp1 = *(coef_gamma+x) * pow(*penetrance, matrix[0][x]);
+				while( y<*length && matrix[1][x]==matrix[1][y] && matrix[2][x]==matrix[2][y] ){
+					tmp1 += *(coef_gamma+y) * pow(*penetrance, matrix[0][y]);
+					y++;
+				}
+				valuegamma += tmp1 * pow(*(penetrance+1), matrix[1][x]) * pow(*(penetrance+2), matrix[2][x]-1);
+				x=y;
+			}
+			else{
+				valuegamma += *(coef_gamma+x) * pow(*penetrance, matrix[0][x]) * pow(*(penetrance+1), matrix[1][x]) * pow(*(penetrance+2), matrix[2][x]-1);
 				x++;
 			}
-			tmp1 += tmp2 * pow(*(penetrance+1), j);
 		}
-		valuegamma += tmp1 * pow(*(penetrance+2), k);
+		else{
+			valuegamma += *(coef_gamma+x) * pow(*penetrance, matrix[0][x]) * pow(*(penetrance+1), matrix[1][x]) * pow(*(penetrance+2), matrix[2][x]-1);
+			x++;
+		}
 	}
 
 	*(result) = valuealpha / value;
@@ -2364,37 +2387,38 @@ void eval_fr(double *penetrance, double *poly, int *powers, int *max_power, int 
 	for(i=0;i<*length;i++){
 		tmp = *(powers+i);
 		for(j=2;j>=1;j--){
-//			matrix[j][i] = tmp / (int)pow(*max_power, j);
 			a = tmp % (int)pow(*max_power, j);
-//			if( a == 0 ){
-//				matrix[j][i] = (int)(tmp / pow(*max_power, j) + 0.1);
-//			}
-//			else{
-				matrix[j][i] = tmp / (int)pow(*max_power, j);
-//			}
+			matrix[j][i] = tmp / (int)pow(*max_power, j);
 			tmp = a;
 		}
 		matrix[0][i] = tmp;
 	}
 
 	double value=0.0;
-	double tmp1,tmp2;
-	int k;
-	int x = 0;
+	double tmp1;
+	int x = 0,y;
 
 	while( x < *length ){
-		k = matrix[2][x];
-		tmp1 = 0.0;
-		while( (x < *length) && k == matrix[2][x] ){
-			j = matrix[1][x];
-			tmp2 = 0.0;
-			while( ((x < *length) && j == matrix[1][x]) && k == matrix[2][x] ){
-				tmp2 += *(poly+x) * pow(*penetrance, matrix[0][x]);
+		y = x+1;
+		if( matrix[2][x] == matrix[2][y] ){
+			if( matrix[1][x] == matrix[1][y] ){
+				tmp1 = *(poly+x) * pow(*penetrance, matrix[0][x]);
+				while( y<*length && matrix[1][x]==matrix[1][y] && matrix[2][x]==matrix[2][y] ){
+					tmp1 += *(poly+y) * pow(*penetrance, matrix[0][y]);
+					y++;
+				}
+				value += tmp1 * pow(*(penetrance+1), matrix[1][x]) * pow(*(penetrance+2), matrix[2][x]);
+				x=y;
+			}
+			else{
+				value += *(poly+x) * pow(*penetrance, matrix[0][x]) * pow(*(penetrance+1), matrix[1][x]) * pow(*(penetrance+2), matrix[2][x]);
 				x++;
 			}
-			tmp1 += tmp2 * pow(*(penetrance+1), j);
 		}
-		value += tmp1 * pow(*(penetrance+2), k);
+		else{
+			value += *(poly+x) * pow(*penetrance, matrix[0][x]) * pow(*(penetrance+1), matrix[1][x]) * pow(*(penetrance+2), matrix[2][x]);
+			x++;
+		}
 	}
 
 	*result = log(value);

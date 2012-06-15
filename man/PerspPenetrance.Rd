@@ -1,5 +1,5 @@
-\name{persp_penetrance}
-\alias{persp_penetrance}
+\name{PerspPenetrance}
+\alias{PerspPenetrance}
 \title{
 Draw perspective plot of log likelihood surface 
 }
@@ -10,7 +10,7 @@ The picture is drawn by
 fixing one of the given parameters.
 }
 \usage{
-persp_penetrance(poly, fixed, value, ...)
+PerspPenetrance(poly, fixed, value, ...)
 }
 \arguments{
   \item{poly}{
@@ -28,7 +28,7 @@ additional arguments to \code{persp}.
 
 
 \references{
-Sugaya Y. MLEP: Programs for exploring the maximum likelihood estimates of penetrance parameters, In preparation. 
+Sugaya Y. MLEP: Programs for exploring the maximum likelihood estimates of penetrance parameters, Submitted. 
 }
 \author{
 Yuki Sugaya
@@ -42,7 +42,7 @@ Yuki Sugaya
 data(polynomial)
 
 ## Draw perspective plot of the polynimial
-persp_penetrance(polynomial, "gamma", 0.279, theta=-60, phi=20)
+PerspPenetrance(polynomial, "gamma", 0.279, theta=-60, phi=20)
 
 }
 
